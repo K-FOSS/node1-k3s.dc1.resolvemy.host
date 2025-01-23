@@ -57,7 +57,7 @@ metadata:
 spec:
   bgpInstances:
     - name: main
-      localASN: 64567
+      localASN: 64512
       peers:
         - name: wan-sw1.dc1.resolvemy.host
           peerAddress: 172.31.241.237
