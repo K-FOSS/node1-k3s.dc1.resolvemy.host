@@ -52,9 +52,9 @@ cilium:
   iptablesRandomFully: false
   # -- (string) Kubernetes config path
   # @default -- `"~/.kube/config"`
-  kubeConfigPath: ""
+  kubeConfigPath: "6443"
   # -- (string) Kubernetes service host - use "auto" for automatic lookup from the cluster-info ConfigMap
-  k8sServiceHost: ""
+  k8sServiceHost: "172.31.241.238"
   # @schema
   # type: [string, integer]
   # @schema
