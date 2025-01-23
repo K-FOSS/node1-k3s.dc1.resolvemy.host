@@ -1,0 +1,66 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPAdvertisement
+metadata:
+  name: dc1-main
+  namespace: kube-system
+
+  labels:
+    advertise: bgp
+spec:
+  advertisements:
+    - advertisementType: PodCIDR
+    - advertisementType: Service
+      service:
+        addresses:
+          - LoadBalancerIP
+          - ClusterIP
+          - ExternalIP
+      selector:             # <-- select all services
+        matchExpressions:
+         - {key: somekey, operator: NotIn, values: ['never-used-value']}
+
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPPeerConfig
+metadata:
+  name: default
+  namespace: kube-system
+spec:
+  families:
+    - afi: ipv4
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: 'bgp'
+# ---
+# apiVersion: cilium.io/v2alpha1
+# kind: CiliumBGPNodeConfigOverride
+# metadata:
+#   name: node0
+
+#   namespace: kube-system
+# spec:
+#   bgpInstances:
+#     - name: main
+#       routerID: 192.168.4.71
+#       localPort: 5555
+#       peers:
+#         - name: frr
+#           localAddress: 192.168.4.71
+
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPClusterConfig
+metadata:
+  name: cilium-bgp-cluster
+  namespace: kube-system
+spec:
+  bgpInstances:
+    - name: main
+      localASN: 64567
+      peers:
+        - name: wan-sw1.dc1.resolvemy.host
+          peerAddress: 172.31.241.237
+          peerASN: 64567
+          peerConfigRef:
+            name: default

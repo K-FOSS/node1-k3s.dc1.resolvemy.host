@@ -447,7 +447,7 @@ cilium:
   # CiliumBGPPeeringPolicy CRDs.
   bgpControlPlane:
     # -- Enables the BGP control plane.
-    enabled: false
+    enabled: true
     # -- SecretsNamespace is the namespace which BGP support will retrieve secrets from.
     secretsNamespace:
       # -- Create secrets namespace for BGP secrets.
@@ -1988,11 +1988,11 @@ cilium:
   kubeProxyReplacementHealthzBindAddr: ""
   l2NeighDiscovery:
     # -- Enable L2 neighbor discovery in the agent
-    enabled: true
+    enabled: false
     # -- Override the agent's default neighbor resolution refresh period.
     refreshPeriod: "30s"
   # -- Enable Layer 7 network policy.
-  l7Proxy: true
+  l7Proxy: false
   # -- Enable Local Redirect Policy.
   localRedirectPolicy: false
   # To include or exclude matched resources from cilium identity evaluation
