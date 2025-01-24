@@ -6,3 +6,8 @@ dependencies:
   - name: cilium
     version: '1.17.0-rc.1'
     repository: https://helm.cilium.io/
+
+  - name: external-dns
+    condition: external-dns.enabled
+    version: '>= 8.3.5'
+    repository: https://charts.bitnami.com/bitnami
