@@ -19,6 +19,8 @@ spec:
     repoURL: https://github.com/K-FOSS/node1-k3s.dc1.resolvemy.host.git
     targetRevision: HEAD
     path: ArgoCD
+    plugin:
+      name: argocd-lovely-plugin
 
   destination: 
     server: https://kubernetes.default.svc
