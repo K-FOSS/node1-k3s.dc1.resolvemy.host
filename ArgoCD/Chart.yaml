@@ -1,8 +1,0 @@
-apiVersion: v2
-version: 1.0.0
-name: dc1-k3s-argocd
-
-dependencies:
-  - name: argo-cd
-    version: '>= 7.7.16'
-    repository: https://argoproj.github.io/argo-helm
