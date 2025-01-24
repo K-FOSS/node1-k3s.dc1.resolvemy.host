@@ -3,6 +3,9 @@ kind: ApplicationSet
 metadata:
   name: core-backplane-corevault
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '6'
 spec:
   generators:
     - list:

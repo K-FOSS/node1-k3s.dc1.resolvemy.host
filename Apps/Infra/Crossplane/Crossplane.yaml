@@ -4,6 +4,9 @@ metadata:
   name: core-backplane-ops-crossplane
   namespace: argocd
 
+  annotations:
+    argocd.argoproj.io/sync-wave: '0'
+
 spec:
   generators:
     - list:
@@ -33,12 +36,6 @@ spec:
         targetRevision: HEAD
         plugin:
           name: argocd-lovely-plugin
-        #   env:
-        #     - name: LOVELY_HELM_MERGE
-        #       value: |- 
-        #         s3-operator:
-        #           kubernetesClusterDomain: {{clusterDomain}}
-
 
       destination:
         server: '{{url}}'

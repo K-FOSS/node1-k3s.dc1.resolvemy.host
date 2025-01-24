@@ -3,6 +3,9 @@ kind: ApplicationSet
 metadata:
   name: core-backplane-consul-main
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '5'
 spec:
   generators:
     - list:
