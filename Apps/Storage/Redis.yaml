@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: core-backplane-keydb-deploy
+  name: core-backplane-keydb-core
   namespace: argocd
 spec:
   generators:
@@ -9,25 +9,54 @@ spec:
         elements:
           - cluster: dc1-k3s-node1
             url: https://kubernetes.default.svc
+            loadBalancerIP: 10.1.1.68
+            externalNodes: "[]"
+            replicas: '1'
   template:
     metadata:
-      name: '{{cluster}}-keydb-deploy'
+      name: '{{cluster}}-keydb-core'
 
       annotations:
         argocd.argoproj.io/manifest-generate-paths: .
 
     spec:
       project: core
-      syncPolicy:
-        automated:
-          selfHeal: true
       source:
-        path: Storage/KeyDB
         repoURL: https://github.com/K-FOSS/CoRE-Backplane.git
-        targetRevision: HEAD
-        directory:
-          recurse: false
-          jsonnet: {}
+        path: Storage/KeyDB/KeyDBChart
+        targetRevision: main
+        helm:
+          releaseName: keydb-core
+          values: |
+            externalNodes: {{externalNodes}}
+
+            nodes: {{replicas}}
+
+            service:
+              annotations:
+                consul.hashicorp.com/service-name: '{{ cluster }}-keydb-headless'
+                external-dns.alpha.kubernetes.io/hostname: redis.mylogin.space
+
+            configExtraArgs:
+              - databases: '256'
+              - appendfsync: 'no'
+              - client-output-buffer-limit: ["replica", "0", "0", "0"]
+              - client-output-buffer-limit: ["pubsub", "0", "0", "0"]
+
+            clusterMode: false
+
+            loadBalancer:
+              enabled: false
+              annotations:
+                metallb.universe.tf/allow-shared-ip: keydb
+                consul.hashicorp.com/service-name: keydb
+                metallb.universe.tf/ip-allocated-from-pool: anycast-pool
+                external-dns.alpha.kubernetes.io/hostname: redis.mylogin.space
+                metallb.universe.tf/loadBalancerIPs: {{ loadBalancerIP }}
+                io.cilium/lb-ipam-sharing-key: redis
+                io.cilium/lb-ipam-ips: {{ loadBalancerIP }}
+
+
       destination:
         server: '{{url}}'
-        namespace: argocd
+        namespace: core-prod
