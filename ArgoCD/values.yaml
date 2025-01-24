@@ -43,7 +43,7 @@ argo-cd:
   global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: argocd.example.com
+    domain: argocd.writemy.codes
 
     # -- Runtime class name for all components
     runtimeClassName: ""
@@ -182,14 +182,14 @@ argo-cd:
 
       # -- Enable exec feature in Argo UI
       ## Ref: https://argo-cd.readthedocs.io/en/latest/operator-manual/rbac/#exec-resource
-      exec.enabled: false
+      exec.enabled: true
 
       # -- Enable local admin user
       ## Ref: https://argo-cd.readthedocs.io/en/latest/faq/#how-to-disable-admin-user
       admin.enabled: true
 
       # -- Timeout to discover if a new manifests version got published to the repository
-      timeout.reconciliation: 180s
+      timeout.reconciliation: 1800s
 
       # -- Timeout to refresh application data as well as target manifests cache
       timeout.hard.reconciliation: 0s
@@ -197,6 +197,18 @@ argo-cd:
       # -- Enable Status Badge
       ## Ref: https://argo-cd.readthedocs.io/en/stable/user-guide/status-badge/
       statusbadge.enabled: false
+
+      resource.customizations.ignoreResourceUpdates.external-secrets.io_ExternalSecret: |
+        jsonPointers:
+        - /status/refreshTime
+
+      resource.exclusions: |
+        - apiGroups:
+            - cilium.io
+          kinds:
+            - CiliumIdentity
+          clusters:
+            - "*"
 
       # Dex configuration
       # dex.config: |
@@ -303,13 +315,13 @@ argo-cd:
       # -- A list of glob patterns specifying where to look for ApplicationSet resources. (e.g. `"argocd,argocd-appsets-*"`)
       # @default -- `""` (default is only the ns where the controller is installed)
       ## For more information: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Appset-Any-Namespace/
-      applicationsetcontroller.namespaces: ""
+      applicationsetcontroller.namespaces: "*"
 
       # -- Enables [Applications in any namespace]
       ## List of additional namespaces where applications may be created in and reconciled from.
       ## The namespace where Argo CD is installed to will always be allowed.
       ## Set comma-separated list. (e.g. app-team-one, app-team-two)
-      application.namespaces: ""
+      application.namespaces: "*"
 
       # -- JQ Path expression timeout
       ## By default, the evaluation of a JQPathExpression is limited to one second.
