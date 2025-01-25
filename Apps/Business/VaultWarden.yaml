@@ -94,7 +94,7 @@ spec:
                     DATABASE_URL:
                       valueFrom:
                         secretKeyRef:
-                          name: {{ cluster }}-business-passwords-vaultwarden-core-business-password
+                          name: {{ cluster }}-business-passwords-vaultwarden-core-business-pass
                           key: psqlURI
 
 
