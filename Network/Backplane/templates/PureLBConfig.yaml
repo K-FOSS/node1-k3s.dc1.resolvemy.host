@@ -23,7 +23,8 @@ spec:
       - subnet: 66.165.222.96/27
         pool: 66.165.222.100/32
         aggregation: default
+
       - subnet: 66.165.222.96/27
-        pool: 66.165.222.110-66.165.222.128
+        pool: 66.165.222.110-66.165.222.127
         aggregation: default
 ---
