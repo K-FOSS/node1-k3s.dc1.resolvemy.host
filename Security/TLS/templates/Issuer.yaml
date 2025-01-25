@@ -7,8 +7,6 @@ spec:
   acme:
     email: august@mylogin.space
 
-    preferredChain: ""
-
     privateKeySecretRef:
       name: letsencrypt-prod
 
