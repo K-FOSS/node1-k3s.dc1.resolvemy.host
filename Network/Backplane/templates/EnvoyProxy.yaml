@@ -17,8 +17,10 @@ spec:
   provider:
     type: Kubernetes
     kubernetes:
-      envoyDaemonSet:
-        name: main-gw
+      envoyDeployment:
+        replicas: 2
+
+
 
       #useListenerPortAsContainerPort: true
 
