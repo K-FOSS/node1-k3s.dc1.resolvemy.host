@@ -40,4 +40,4 @@ spec:
 
       destination:
         server: '{{url}}'
-        namespace: core-backplane
+        namespace: authorino-operator
