@@ -35,7 +35,7 @@ spec:
 
       source:
         path: Security/Authorino
-        repoURL: https://github.com/K-FOSS/node1-k3s.dc1.resolvemy.host.git
+        repoURL: https://github.com/K-FOSS/CoRE-Backplane.git
         targetRevision: HEAD
 
       destination:
