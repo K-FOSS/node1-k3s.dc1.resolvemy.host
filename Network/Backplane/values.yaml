@@ -738,6 +738,7 @@ cilium:
     enabled: false
     # -- Interface used for sending Gratuitous ARP pod announcements
     interface: "eth0"
+
   # -- This feature set enables virtual BGP routers to be created via
   # CiliumBGPPeeringPolicy CRDs.
   bgpControlPlane:
@@ -749,16 +750,19 @@ cilium:
       create: false
       # -- The name of the secret namespace to which Cilium agents are given read access
       name: kube-system
+
     # -- Status reporting settings (BGPv2 only)
     statusReport:
       # -- Enable/Disable BGPv2 status reporting
       # It is recommended to enable status reporting in general, but if you have any issue
       # such as high API server load, you can disable it by setting this to false.
       enabled: true
+
   pmtuDiscovery:
     # -- Enable path MTU discovery to send ICMP fragmentation-needed replies to
     # the client.
     enabled: true
+
   bpf:
     autoMount:
       # -- Enable automatic mount of BPF filesystem
@@ -853,6 +857,7 @@ cilium:
     # type: [null, integer]
     # @schema
     policyMapMax: 16384
+
     # @schema
     # type: [null, number]
     # @schema
@@ -860,24 +865,30 @@ cilium:
     # ref: https://docs.cilium.io/en/stable/network/ebpf/maps/
     # @default -- `0.0025`
     mapDynamicSizeRatio: ~
+
     # -- Configure the level of aggregation for monitor notifications.
     # Valid options are none, low, medium, maximum.
     monitorAggregation: medium
+
     # -- Configure the typical time between monitor notifications for
     # active connections.
     monitorInterval: "5s"
+
     # -- Configure which TCP flags trigger notifications when seen for the
     # first time in a connection.
     monitorFlags: "all"
+
     # -- (bool) Allow cluster external access to ClusterIP services.
     # @default -- `false`
     lbExternalClusterIP: true
+
     # -- (bool) Enable loadBalancerSourceRanges CIDR filtering for all service
     # types, not just LoadBalancer services. The corresponding NodePort and
     # ClusterIP (if enabled for cluster-external traffic) will also apply the
     # CIDR filter.
     # @default -- `false`
     lbSourceRangeAllTypes: false
+
     # -- (bool) Enable the option to define the load balancing algorithm on
     # a per-service basis through service.cilium.io/lb-algorithm annotation.
     # @default -- `false`
@@ -1027,6 +1038,7 @@ cilium:
   customCalls:
     # -- Enable tail call hooks for custom eBPF programs.
     enabled: false
+
   daemon:
     # -- Configure where Cilium runtime state should be stored.
     runPath: "/var/run/cilium"
@@ -2323,6 +2335,7 @@ cilium:
     mapStatsEntries: 32
     # -- Interval between how often SNAT map is counted for stats.
     mapStatsInterval: 30s
+
   egressGateway:
     # -- Enables egress gateway to redirect and SNAT the traffic that leaves the
     # cluster.
@@ -2365,10 +2378,12 @@ cilium:
   # the user must configure the routes to reach pods, either manually or by
   # setting the auto-direct-node-routes flag.
   ipv6NativeRoutingCIDR: ""
+
   # -- cilium-monitor sidecar.
   monitor:
     # -- Enable the cilium-monitor sidecar.
     enabled: false
+
   # -- Configure service load balancing
   loadBalancer:
     # -- standalone enables the standalone L4LB which does not connect to
@@ -2420,6 +2435,7 @@ cilium:
       # service annotation (e.g. service.cilium.io/lb-l7-algorithm)
       # Applicable values: round_robin, least_request, random
       algorithm: round_robin
+
   # -- Configure N-S k8s service loadbalancing
   nodePort:
     # -- Enable the Cilium NodePort service implementation.
@@ -2469,13 +2485,13 @@ cilium:
     port: 6060
   # -- Configure prometheus metrics on the configured port at /metrics
   prometheus:
-    metricsService: false
-    enabled: false
+    metricsService: true
+    enabled: true
     port: 9962
     serviceMonitor:
       # -- Enable service monitors.
       # This requires the prometheus CRDs to be available (see https://github.com/prometheus-operator/prometheus-operator/blob/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml)
-      enabled: false
+      enabled: true
       # -- Labels to add to ServiceMonitor cilium-agent
       labels: {}
       # -- Annotations to add to ServiceMonitor cilium-agent
@@ -2520,7 +2536,7 @@ cilium:
   # grafana can import dashboards based on the label and value
   # ref: https://github.com/grafana/helm-charts/tree/main/charts/grafana#sidecar-for-dashboards
   dashboards:
-    enabled: false
+    enabled: true
     label: grafana_dashboard
     # @schema
     # type: [null, string]
