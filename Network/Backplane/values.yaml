@@ -1961,9 +1961,6 @@ cilium:
           # type: [null, string]
           # @schema
           override: ~
-          repository: "quay.io/cilium/hubble-ui-backend"
-          tag: "v0.13.1"
-          digest: "sha256:0e0eed917653441fded4e7cdb096b7be6a3bddded5a2dd10812a27b1fc6ed95b"
           useDigest: true
           pullPolicy: "IfNotPresent"
         # -- Hubble-ui backend security context.
@@ -2904,7 +2901,7 @@ cilium:
   # This value doesn't change the host network interface MTU i.e. eth0 or ens0.
   # It changes the MTU for cilium_net@cilium_host, cilium_host@cilium_net,
   # cilium_vxlan and lxc_health interfaces.
-  MTU: 0
+  MTU: 9000
   
   # -- Disable the usage of CiliumEndpoint CRD.
   disableEndpointCRD: false
@@ -2914,25 +2911,13 @@ cilium:
   etcd:
     # -- Enable etcd mode for the agent.
     enabled: false
-    # -- List of etcd endpoints
-    endpoints:
-      - https://CHANGE-ME:2379
-    # -- Enable use of TLS/SSL for connectivity to etcd.
-    ssl: false
+
   operator:
     # -- Enable the cilium-operator component (required).
     enabled: true
     # -- Roll out cilium-operator pods automatically when configmap is updated.
     rollOutPods: false
-    # -- cilium-operator image.
-    image:
-      # @schema
-      # type: [null, string]
-      # @schema
-      override: ~
-      repository: "quay.io/cilium/operator"
-      pullPolicy: "IfNotPresent"
-      suffix: ""
+
     # -- Number of replicas to run for the cilium-operator deployment
     replicas: 1
     # -- The priority class to use for cilium-operator
@@ -3041,25 +3026,8 @@ cilium:
       serviceMonitor:
         # -- Enable service monitors.
         # This requires the prometheus CRDs to be available (see https://github.com/prometheus-operator/prometheus-operator/blob/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml)
-        enabled: false
-        # -- Labels to add to ServiceMonitor cilium-operator
-        labels: {}
-        # -- Annotations to add to ServiceMonitor cilium-operator
-        annotations: {}
-        # -- jobLabel to add for ServiceMonitor cilium-operator
-        jobLabel: ""
-        # -- Interval for scrape metrics.
-        interval: "10s"
-        # @schema
-        # type: [null, array]
-        # @schema
-        # -- Relabeling configs for the ServiceMonitor cilium-operator
-        relabelings: ~
-        # @schema
-        # type: [null, array]
-        # @schema
-        # -- Metrics relabeling configs for the ServiceMonitor cilium-operator
-        metricRelabelings: ~
+        enabled: true
+
     # -- Grafana dashboards for cilium-operator
     # grafana can import dashboards based on the label and value
     # ref: https://github.com/grafana/helm-charts/tree/main/charts/grafana#sidecar-for-dashboards
