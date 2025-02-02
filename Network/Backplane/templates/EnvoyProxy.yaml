@@ -6,8 +6,8 @@ metadata:
 spec:
   telemetry:
     tracing:
-      # sample 100% of requests
-      samplingRate: 100
+      # sample 1% of requests
+      samplingRate: 1
       provider:
         host: tempo-core-tempo.core-prod.svc.cluster.local
         port: 4317
