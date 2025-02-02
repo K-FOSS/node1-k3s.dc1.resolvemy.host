@@ -709,9 +709,10 @@ cilium:
   # Time) through the "kubernetes.io/egress-bandwidth" Pod annotation.
   bandwidthManager:
     # -- Enable bandwidth manager infrastructure (also prerequirement for BBR)
-    enabled: false
+    enabled: true
     # -- Activate BBR TCP congestion control for Pods
-    bbr: false
+    bbr: true
+
   # -- Configure standalone NAT46/NAT64 gateway
   nat46x64Gateway:
     # -- Enable RFC8215-prefixed translation
