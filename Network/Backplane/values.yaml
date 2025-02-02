@@ -2488,7 +2488,7 @@ cilium:
     serviceMonitor:
       # -- Enable service monitors.
       # This requires the prometheus CRDs to be available (see https://github.com/prometheus-operator/prometheus-operator/blob/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml)
-      enabled: false
+      enabled: true
 
       # -- Set to `true` and helm will not check for monitoring.coreos.com/v1 CRDs before deploying
       trustCRDsExist: true
@@ -3298,18 +3298,7 @@ cilium:
       #     key: ""
       #     caCert: ""
     apiserver:
-      # -- Clustermesh API server image.
-      image:
-        # @schema
-        # type: [null, string]
-        # @schema
-        override: ~
-        repository: "quay.io/cilium/clustermesh-apiserver"
-        tag: "v1.17.0-rc.1"
-        # clustermesh-apiserver-digest
-        digest: "sha256:2b7b7d2b97f635f6fb8cc238f3d3c2243ad77148fd5bd926cd59d21a7d6d1154"
-        useDigest: true
-        pullPolicy: "IfNotPresent"
+
       # -- TCP port for the clustermesh-apiserver health API.
       healthPort: 9880
       # -- Configuration for the clustermesh-apiserver readiness probe.
