@@ -2515,7 +2515,7 @@ cilium:
   # grafana can import dashboards based on the label and value
   # ref: https://github.com/grafana/helm-charts/tree/main/charts/grafana#sidecar-for-dashboards
   dashboards:
-    enabled: true
+    enabled: false
     label: grafana_dashboard
     # @schema
     # type: [null, string]
