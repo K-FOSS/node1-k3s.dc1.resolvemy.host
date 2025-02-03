@@ -51,8 +51,8 @@ spec:
                     - name: DATABASE_URL
                       valueFrom:
                         secretKeyRef:
-                          name: business-projects-openproject-database-{{ environment }}
-                          key: DBURI
+                          name: {{ cluster }}-business-projects
+                          key: psqlURI
 
                     # Storage
                     - name: OPENPROJECT_ATTACHMENTS__STORAGE
@@ -70,8 +70,8 @@ spec:
                     - name: OPENPROJECT_FOG_DIRECTORY
                       valueFrom:
                         secretKeyRef:
-                          name: business-projects-openproject-s3-{{ environment }}
-                          key: Bucket
+                          name: {{ cluster }}-business-projects
+                          key: username
 
                     - name: OPENPROJECT_FOG_CREDENTIALS_AWS__ACCESS__KEY__ID
                       valueFrom:
