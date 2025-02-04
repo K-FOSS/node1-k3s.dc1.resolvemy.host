@@ -22,7 +22,6 @@ spec:
 
       syncPolicy:
         syncOptions:
-          - ServerSideApply=true
           - RespectIgnoreDifferences=true
 
       source:
