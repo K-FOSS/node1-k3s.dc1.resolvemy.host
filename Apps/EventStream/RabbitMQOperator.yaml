@@ -16,7 +16,7 @@ spec:
   
   template:
     metadata:
-      name: '{{cluster}}-messagebroker-rmqops'
+      name: '{{cluster}}-rabbitmq-operator'
     
       annotations:
         argocd.argoproj.io/manifest-generate-paths: .
