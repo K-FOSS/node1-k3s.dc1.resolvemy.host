@@ -17,8 +17,24 @@ spec:
   provider:
     type: Kubernetes
     kubernetes:
+      envoyService:
+        type: LoadBalancer
+        externalTrafficPolicy: Local
       envoyDeployment:
         replicas: 2
+          
+        container:
+          resources:
+            requests:
+              cpu: 150m
+              memory: 640Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+
+        pod:
+          labels:
+            logs: loki-myloginspace
 
 
 
