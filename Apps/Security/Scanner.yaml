@@ -30,6 +30,30 @@ spec:
         path: Security/Scanner
         repoURL: https://github.com/K-FOSS/CoRE-Backplane.git
         targetRevision: HEAD
+        plugin:
+          name: argocd-lovely-plugin
+          env:
+            - name: LOVELY_HELM_MERGE
+              value: |-
+                defectdojo:
+                  extraEnv:
+                    - name: DD_SOCIAL_AUTH_KEYCLOAK_KEY
+                      valueFrom:
+                        secretKeyRef:
+                          name: '{{cluster}}-security-scanner-defectdojo-oidc'
+                          key: OIDC_CLIENT_ID
+
+                    - name: DD_SOCIAL_AUTH_KEYCLOAK_SECRET
+                      valueFrom:
+                        secretKeyRef:
+                          name: '{{cluster}}-security-scanner-defectdojo-oidc'
+                          key: OIDC_CLIENT_SECRET
+
+                    - name: DD_ADMIN_PASSWORD
+                      valueFrom:
+                        secretKeyRef:
+                          name: core-security-creds
+                          key: password
 
       destination:
         server: '{{url}}'
