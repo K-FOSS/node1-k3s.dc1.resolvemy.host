@@ -2338,11 +2338,12 @@ cilium:
   egressGateway:
     # -- Enables egress gateway to redirect and SNAT the traffic that leaves the
     # cluster.
-    enabled: false
+    enabled: true
     # -- Time between triggers of egress gateway state reconciliations
     reconciliationTriggerInterval: 1s
     # -- Maximum number of entries in egress gateway policy map
     # maxPolicyEntries: 16384
+
   vtep:
     # -- Enables VXLAN Tunnel Endpoint (VTEP) Integration (beta) to allow
     # Cilium-managed pods to talk to third party VTEP devices over Cilium tunnel.
@@ -2523,14 +2524,8 @@ cilium:
   # grafana can import dashboards based on the label and value
   # ref: https://github.com/grafana/helm-charts/tree/main/charts/grafana#sidecar-for-dashboards
   dashboards:
-    enabled: false
-    label: grafana_dashboard
-    # @schema
-    # type: [null, string]
-    # @schema
-    namespace: ~
-    labelValue: "1"
-    annotations: {}
+    enabled: true
+
   # Configure Cilium Envoy options.
   envoy:
     # @schema
