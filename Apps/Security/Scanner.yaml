@@ -49,6 +49,12 @@ spec:
                           name: '{{cluster}}-security-scanner-defectdojo-oidc'
                           key: OIDC_CLIENT_SECRET
 
+                    - name: DD_SOCIAL_AUTH_KEYCLOAK_PUBLIC_KEY
+                      valueFrom:
+                        secretKeyRef:
+                          name: '{{cluster}}-security-scanner-defectdojo'
+                          key: DD_SOCIAL_AUTH_KEYCLOAK_PUBLIC_KEY
+
                     - name: DD_ADMIN_PASSWORD
                       valueFrom:
                         secretKeyRef:
