@@ -32,30 +32,16 @@ spec:
           env:
             - name: ARGOCD_APP_NAME
               value: 'netbox-ipam'
-        #     - name: LOVELY_HELM_MERGE
-        #       value: |-
-        #         coredns:
-        #           affinity:
-        #             podAntiAffinity:
-        #               preferredDuringSchedulingIgnoredDuringExecution:
-        #                 - weight: 100
-        #                   podAffinityTerm:
-        #                     labelSelector:
-        #                       matchExpressions:
-        #                         - key: app.kubernetes.io/instance
-        #                           operator: In
-        #                           values:
-        #                             - '{{cluster}}-rdns-lab'
-        #                     topologyKey: kubernetes.io/hostname
-
-        #           serviceType: LoadBalancer
-        #           service:
-        #             annotations:
-        #               purelb.io/service-group: anycast
-        #             name: test-dns-rdns-core
-        #             externalTrafficPolicy: Local
-        #             loadBalancerIP: '{{loadBalancerIP}}'
-
+            - name: LOVELY_HELM_MERGE
+              value: |-
+                persistence:
+                  configs:
+                    enabled: true
+                    mountPath: /etc/DHCP
+                    type: custom
+                    volumeSpec:
+                      secret:
+                        secretName: '{{cluster}}-network-ipam-dhcp-config'
 
 
       destination:
