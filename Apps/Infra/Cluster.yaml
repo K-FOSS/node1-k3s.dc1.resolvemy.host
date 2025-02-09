@@ -36,6 +36,20 @@ spec:
         targetRevision: HEAD
         plugin:
           name: argocd-lovely-plugin
+          env:
+            - name: LOVELY_HELM_MERGE
+              value: |- 
+                kamaji:
+                  datastore:
+                    basicAuth:
+                      usernameSecret:
+                        name: {{cluster}}-ops-cluster-kamaji
+                        namespace: multicluster-controlplane
+
+                      passwordSecret:
+                        name: {{cluster}}-ops-cluster-kamaji
+                        namespace: multicluster-controlplane
+
 
       destination:
         server: '{{url}}'
