@@ -306,6 +306,9 @@ cilium:
   # This property allows to use Cilium as part of an Umbrella Chart with different targets.
   namespaceOverride: ""
 
+  commonLabels:
+    core-env: 'prod'
+
   # @schema
   # type: [null, string]
   # @schema
