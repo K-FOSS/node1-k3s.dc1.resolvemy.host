@@ -36,6 +36,12 @@ spec:
                       name: 'dc1-k3s-node1-baremetal-core-dellbmc'
                       key: Password
 
+                  - name: node2
+                    Hostname: 172.16.20.64
+                    secretKeyRef:
+                      name: 'dc1-k3s-node1-baremetal-core-dellbmc'
+                      key: Password
+
       destination:
         server: '{{url}}'
         namespace: core-prod
