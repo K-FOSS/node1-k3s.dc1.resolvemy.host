@@ -36,7 +36,6 @@ spec:
             name: dc1-k3s-node1-collectors-alloy
             namespace: core-prod
             port: 4317
-            weight: 1
 
         type: OpenTelemetry
 
