@@ -5,6 +5,27 @@ metadata:
 
 spec:
   telemetry:
+    accessLog:
+      disable: false
+      settings:
+        - format:
+            type: JSON
+            json:
+              status: "%RESPONSE_CODE%"
+              message: "%LOCAL_REPLY_BODY%"
+
+          sinks:
+            - type: OpenTelemetry
+              openTelemetry:
+                backendRefs:
+                  - group: ''
+                    kind: Service
+                    name: dc1-k3s-node1-collectors-alloy
+                    namespace: core-prod
+                    port: 4317
+
+                resources:
+                  k8s.cluster.name: "dc1-k3s"
     tracing:
       # sample 1% of requests
       samplingRate: 1
