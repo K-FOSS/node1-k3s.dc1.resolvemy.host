@@ -1394,12 +1394,12 @@ cilium:
     affinity: {}
   hubble:
     # -- Enable Hubble (true by default).
-    enabled: false
+    enabled: true
     # -- Annotations to be added to all top-level hubble objects (resources under templates/hubble)
     annotations: {}
     # -- Buffer size of the channel Hubble uses to receive monitor events. If this
     # value is not set, the queue size is set to the default monitor queue size.
-    # eventQueueSize: ""
+    eventQueueSize: 32768
 
     # -- Number of recent flows for Hubble to cache. Defaults to 4095.
     # Possible values are:
