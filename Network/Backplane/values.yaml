@@ -554,7 +554,9 @@ cilium:
   extraVolumeMounts: []
   # -- extraConfig allows you to specify additional configuration parameters to be
   # included in the cilium-config configmap.
-  extraConfig: {}
+  extraConfig:
+    bpf-ct-timeout-regular-any: 1h0m0s
+    bpf-ct-timeout-service-any: 1h0m0s
   #  my-config-a: "1234"
   #  my-config-b: |-
   #    test 1
@@ -567,20 +569,25 @@ cilium:
   podSecurityContext:
     # -- AppArmorProfile options for the `cilium-agent` and init containers
     appArmorProfile:
-      type: "Unconfined"
+      type: 'Unconfined'
+
   # -- Annotations to be added to agent pods
   podAnnotations: {}
+
   # -- Labels to be added to agent pods
-  podLabels: {}
+  podLabels:
+    logs: loki-myloginspace
+
+
   # -- Agent resource limits & requests
   # ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-  resources: {}
-  #   limits:
-  #     cpu: 4000m
-  #     memory: 4Gi
-  #   requests:
-  #     cpu: 100m
-  #     memory: 512Mi
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 4Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
 
   # -- resources & limits for the agent init containers
   initResources: {}
@@ -842,13 +849,13 @@ cilium:
     # @schema
     # -- (int) Configure the maximum number of entries for the NAT table.
     # @default -- `524288`
-    natMax: ~
+    natMax: null
     # @schema
     # type: [null, integer]
     # @schema
     # -- (int) Configure the maximum number of entries for the neighbor table.
     # @default -- `524288`
-    neighMax: ~
+    neighMax: null
     # @schema
     # type: [null, integer]
     # @schema
@@ -859,7 +866,7 @@ cilium:
     # @schema
     # type: [null, integer]
     # @schema
-    policyMapMax: 16384
+    policyMapMax: 65536
 
     # @schema
     # type: [null, number]
@@ -867,7 +874,7 @@ cilium:
     # -- (float64) Configure auto-sizing for all BPF maps based on available memory.
     # ref: https://docs.cilium.io/en/stable/network/ebpf/maps/
     # @default -- `0.0025`
-    mapDynamicSizeRatio: ~
+    mapDynamicSizeRatio: 0.005
 
     # -- Configure the level of aggregation for monitor notifications.
     # Valid options are none, low, medium, maximum.
@@ -890,16 +897,16 @@ cilium:
     # ClusterIP (if enabled for cluster-external traffic) will also apply the
     # CIDR filter.
     # @default -- `false`
-    lbSourceRangeAllTypes: false
+    lbSourceRangeAllTypes: true
 
     # -- (bool) Enable the option to define the load balancing algorithm on
     # a per-service basis through service.cilium.io/lb-algorithm annotation.
     # @default -- `false`
-    lbAlgorithmAnnotation: false
+    lbAlgorithmAnnotation: true
     # -- (bool) Enable the option to define the load balancing mode (SNAT or DSR)
     # on a per-service basis through service.cilium.io/forwarding-mode annotation.
     # @default -- `false`
-    lbModeAnnotation: false
+    lbModeAnnotation: true
     # @schema
     # type: [null, boolean]
     # @schema
@@ -914,14 +921,14 @@ cilium:
     # the kernel supports it. The latter has the implication that it will also
     # bypass netfilter in the host namespace.
     # @default -- `false`
-    hostLegacyRouting: ~
+    hostLegacyRouting: false
     # @schema
     # type: [null, boolean]
     # @schema
     # -- (bool) Configure the eBPF-based TPROXY (beta) to reduce reliance on iptables rules
     # for implementing Layer 7 policy.
     # @default -- `false`
-    tproxy: ~
+    tproxy: false
     # @schema
     # type: [null, array]
     # @schema
@@ -1024,7 +1031,7 @@ cilium:
         cpu: 100m
         memory: 10Mi
     # -- Enable route MTU for pod netns when CNI chaining is used
-    enableRouteMTUForCNIChaining: false
+    enableRouteMTUForCNIChaining: true
   # -- (string) Configure how frequently garbage collection should occur for the datapath
   # connection tracking table.
   # @default -- `"0s"`
@@ -1033,7 +1040,7 @@ cilium:
   # connection tracking table. Only affects the automatic computation for the frequency
   # and has no effect when 'conntrackGCInterval' is set. This can be set to more frequently
   # clean up unused identities created from ToFQDN policies.
-  conntrackGCMaxInterval: ""
+  conntrackGCMaxInterval: '30m'
   # -- (string) Configure timeout in which Cilium will exit if CRDs are not available
   # @default -- `"5m"`
   crdWaitTimeout: ""
@@ -1089,15 +1096,8 @@ cilium:
   # masqueraded (to an output device IPv4 address), if the output device runs the
   # program. When not specified, probing will automatically detect devices that have
   # a non-local route. This should be used only when autodetection is not suitable.
-  # devices: ""
+  devices: "eno1"
 
-  # -- Enables experimental support for the detection of new and removed datapath
-  # devices. When devices change the eBPF datapath is reloaded and services updated.
-  # If "devices" is set then only those devices, or devices matching a wildcard will
-  # be considered.
-  #
-  # This option has been deprecated and is a no-op.
-  enableRuntimeDeviceDetection: true
   # -- Forces the auto-detection of devices, even if specific devices are explicitly listed
   forceDeviceDetection: false
   # -- Chains to ignore when installing feeder rules.
@@ -1117,37 +1117,12 @@ cilium:
   ciliumEndpointSlice:
     # -- Enable Cilium EndpointSlice feature.
     enabled: false
-    # -- List of rate limit options to be used for the CiliumEndpointSlice controller.
-    # Each object in the list must have the following fields:
-    # nodes: Count of nodes at which to apply the rate limit.
-    # limit: The sustained request rate in requests per second. The maximum rate that can be configured is 50.
-    # burst: The burst request rate in requests per second. The maximum burst that can be configured is 100.
-    rateLimits:
-      - nodes: 0
-        limit: 10
-        burst: 20
-      - nodes: 100
-        limit: 50
-        burst: 100
-    # @schema
-    # enum: ["identity", "fcfs"]
-    # @schema
-    # -- The slicing mode to use for CiliumEndpointSlices.
-    # identity groups together CiliumEndpoints that share the same identity.
-    # fcfs groups together CiliumEndpoints in a first-come-first-serve basis, filling in the largest non-full slice first.
-    sliceMode: identity
+
   envoyConfig:
     # -- Enable CiliumEnvoyConfig CRD
     # CiliumEnvoyConfig CRD can also be implicitly enabled by other options.
     enabled: false
-    # -- SecretsNamespace is the namespace in which envoy SDS will retrieve secrets from.
-    secretsNamespace:
-      # -- Create secrets namespace for CiliumEnvoyConfig CRDs.
-      create: true
-      # -- The name of the secret namespace to which Cilium agents are given read access.
-      name: cilium-secrets
-    # -- Interval in which an attempt is made to reconcile failed EnvoyConfigs. If the duration is zero, the retry is deactivated.
-    retryInterval: 15s
+
   ingressController:
     # -- Enable cilium ingress controller
     # This will automatically set enable-envoy-config as well.
@@ -1241,6 +1216,7 @@ cilium:
         #   kubernetes.io/os: linux
         #   kubernetes.io/hostname: kind-worker
         matchLabels: {}
+
   gatewayAPI:
     # -- Enable support for Gateway API in cilium
     # This will automatically set enable-envoy-config as well.
@@ -1284,6 +1260,7 @@ cilium:
         #   kubernetes.io/os: linux
         #   kubernetes.io/hostname: kind-worker
         matchLabels: {}
+
   # -- Enables the fallback compatibility solution for when the xt_socket kernel
   # module is missing and it is needed for the datapath L7 redirection to work
   # properly. See documentation for details on when this can be disabled:
@@ -1337,9 +1314,11 @@ cilium:
     # -- Enable use of per endpoint routes instead of routing via
     # the cilium_host interface.
     enabled: true
+
   k8sNetworkPolicy:
     # -- Enable support for K8s NetworkPolicy
     enabled: true
+
   # -- Enable endpoint lockdown on policy map overflow.
   endpointLockdownOnMapOverflow: false
   
@@ -1348,7 +1327,7 @@ cilium:
     enabled: true
   
   # fragmentTracking enables IPv4 fragment tracking support in the datapath.
-  # fragmentTracking: true
+  fragmentTracking: true
   
   # -- Enable connectivity health checking.
   healthChecking: true
@@ -1363,9 +1342,11 @@ cilium:
   hostFirewall:
     # -- Enables the enforcement of host policies in the eBPF datapath.
     enabled: false
+
   hostPort:
     # -- Enable hostPort service support.
     enabled: false
+
   # -- Configure socket LB
   socketLB:
     # -- Enable socket LB
@@ -1376,6 +1357,7 @@ cilium:
     # terminatePodConnections: true
     # -- Enables tracing for socket-based load balancing.
     # tracing: true
+
   # -- Configure certificate generation for Hubble integration.
   # If hubble.tls.auto.method=cronJob, these values are used
   # for the Kubernetes CronJob which will be scheduled regularly to
@@ -2170,7 +2152,7 @@ cilium:
   # traffic. This option is only effective when Cilium is running in direct
   # routing and full KPR mode. Moreover, this option cannot be enabled when Cilium
   # is running in a managed Kubernetes environment or in a chained CNI setup.
-  installNoConntrackIptablesRules: false
+  installNoConntrackIptablesRules: true
   ipam:
     # -- Configure IP Address Management mode.
     # ref: https://docs.cilium.io/en/stable/network/concepts/ipam/
@@ -2298,16 +2280,18 @@ cilium:
     enabled: false
     # -- Override the agent's default neighbor resolution refresh period.
     refreshPeriod: "30s"
+
   # -- Enable Layer 7 network policy.
   l7Proxy: false
+
   # -- Enable Local Redirect Policy.
   localRedirectPolicy: false
   # To include or exclude matched resources from cilium identity evaluation
   # labels: ""
 
   # logOptions allows you to define logging options. eg:
-  # logOptions:
-  #   format: json
+  logOptions:
+    format: json
 
   # -- Enables periodic logging of system load
   logSystemLoad: false
@@ -2349,14 +2333,7 @@ cilium:
     # -- Enables VXLAN Tunnel Endpoint (VTEP) Integration (beta) to allow
     # Cilium-managed pods to talk to third party VTEP devices over Cilium tunnel.
     enabled: false
-    # -- A space separated list of VTEP device endpoint IPs, for example "1.1.1.1  1.1.2.1"
-    endpoint: ""
-    # -- A space separated list of VTEP device CIDRs, for example "1.1.1.0/24 1.1.2.0/24"
-    cidr: ""
-    # -- VTEP CIDRs Mask that applies to all VTEP CIDRs, for example "255.255.255.0"
-    mask: ""
-    # -- A space separated list of VTEP device MAC addresses (VTEP MAC), for example "x:x:x:x:x:x  y:y:y:y:y:y:y"
-    mac: ""
+
   # -- (string) Allows to explicitly specify the IPv4 CIDR for native routing.
   # When specified, Cilium assumes networking for this CIDR is preconfigured and
   # hands traffic destined for that range to the Linux network stack without
@@ -2454,7 +2431,8 @@ cilium:
     #
     #   addresses: ["192.168.1.0/24", "2001::/64"]
     #
-    addresses: ~
+    addresses:
+      - 172.31.241.238/30
     # -- Set to true to prevent applications binding to service ports.
     bindProtection: true
     # -- Append NodePort range to ip_local_reserved_ports if clash with ephemeral
@@ -2512,7 +2490,9 @@ cilium:
     # The list is expected to be separated by a space. (+metric_foo to enable
     # metric_foo , -metric_bar to disable metric_bar).
     # ref: https://docs.cilium.io/en/stable/observability/metrics/
-    metrics: ~
+    metrics:
+      - +cilium_bpf_map_pressure
+
     # --- Enable controller group metrics for monitoring specific Cilium
     # subsystems. The list is a list of controller group names. The special
     # values of "all" and "none" are supported. The set of controller
@@ -2823,10 +2803,13 @@ cilium:
   # uninstall Cilium as it will stop Cilium from starting and create artifacts
   # in the node.
   sleepAfterInit: false
+
   # -- Enable check of service source ranges (currently, only for LoadBalancer).
   svcSourceRangeCheck: true
+
   # -- Synchronize Kubernetes nodes to kvstore and perform CNP GC.
   synchronizeK8sNodes: true
+
   # -- Configure TLS configuration in the agent.
   tls:
     # -- This configures how the Cilium agent loads the secrets used TLS-aware CiliumNetworkPolicies
@@ -2886,7 +2869,8 @@ cilium:
   #   - vxlan
   #   - geneve
   # @default -- `"vxlan"`
-  tunnelProtocol: ""
+  tunnelProtocol: ''
+
   # -- Enable native-routing mode or tunneling mode.
   # Possible values:
   #   - ""
@@ -2894,6 +2878,7 @@ cilium:
   #   - tunnel
   # @default -- `"tunnel"`
   routingMode: native
+
   # -- Configure VXLAN and Geneve tunnel port.
   # @default -- Port 8472 for VXLAN, Port 6081 for Geneve
   tunnelPort: 0
