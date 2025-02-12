@@ -339,7 +339,8 @@ cilium:
   # - name: "image-pull-secret"
 
   # -- Configure iptables--random-fully. Disabled by default. View https://github.com/cilium/cilium/issues/13037 for more information.
-  iptablesRandomFully: false
+  iptablesRandomFully: true
+
   # -- (string) Kubernetes config path
   # @default -- `"~/.kube/config"`
   #kubeConfigPath: ""
@@ -1343,7 +1344,7 @@ cilium:
   # -- Configure socket LB
   socketLB:
     # -- Enable socket LB
-    enabled: true    
+    enabled: false    
     # -- Disable socket lb for non-root ns. This is used to enable Istio routing rules.
     # hostNamespaceOnly: false
     # -- Enable terminating pod connections to deleted service backends.
@@ -2368,7 +2369,7 @@ cilium:
 
     # -- mode is the operation mode of load balancing for remote backends
     # e.g. snat, dsr, hybrid
-    mode: dsr
+    mode: snat
 
     # -- acceleration is the option to accelerate service handling via XDP
     # Applicable values can be: disabled (do not use XDP), native (XDP BPF
@@ -2378,7 +2379,7 @@ cilium:
     acceleration: disabled
     # -- dsrDispatch configures whether IP option or IPIP encapsulation is
     # used to pass a service IP and port to remote backend
-    dsrDispatch: opt
+    dsrDispatch: ''
 
     # -- serviceTopology enables K8s Topology Aware Hints -based service
     # endpoints filtering
