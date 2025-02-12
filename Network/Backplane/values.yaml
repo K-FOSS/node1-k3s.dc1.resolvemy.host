@@ -1680,21 +1680,10 @@ cilium:
         extraIpAddresses: []
     relay:
       # -- Enable Hubble Relay (requires hubble.enabled=true)
-      enabled: false
+      enabled: true
       # -- Roll out Hubble Relay pods automatically when configmap is updated.
-      rollOutPods: false
-      # -- Hubble-relay container image.
-      image:
-        # @schema
-        # type: [null, string]
-        # @schema
-        override: ~
-        repository: "quay.io/cilium/hubble-relay"
-        tag: "v1.17.0-rc.1"
-        # hubble-relay-digest
-        digest: "sha256:c5dc43e38cd54b332787f7da273dcffaf8fb0fc17826dc27ee53d1a9f7a5ee91"
-        useDigest: true
-        pullPolicy: "IfNotPresent"
+      rollOutPods: true
+
       # -- Specifies the resources for the hubble-relay pods
       resources: {}
       # -- Number of replicas run for the hubble-relay deployment.
