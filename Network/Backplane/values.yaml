@@ -895,11 +895,11 @@ cilium:
     # -- (bool) Enable the option to define the load balancing algorithm on
     # a per-service basis through service.cilium.io/lb-algorithm annotation.
     # @default -- `false`
-    lbAlgorithmAnnotation: true
+    lbAlgorithmAnnotation: false
     # -- (bool) Enable the option to define the load balancing mode (SNAT or DSR)
     # on a per-service basis through service.cilium.io/forwarding-mode annotation.
     # @default -- `false`
-    lbModeAnnotation: true
+    lbModeAnnotation: false
     # @schema
     # type: [null, boolean]
     # @schema
