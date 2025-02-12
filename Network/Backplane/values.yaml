@@ -9,12 +9,12 @@ envoy-gw:
         tag: latest
       imagePullPolicy: Always
       resources:
-        limits:
-          cpu: '1'
-          memory: 4G
         requests:
-          cpu: 100m
-          memory: 256Mi
+          cpu: 15m
+          memory: 184M
+        limits:
+          cpu: 15m
+          memory: 184M
     ports:
       - name: grpc
         port: 18000
