@@ -11,10 +11,10 @@ envoy-gw:
       resources:
         requests:
           cpu: 15m
-          memory: 184M
+          memory: 300M
         limits:
-          cpu: 15m
-          memory: 184M
+          cpu: 200m
+          memory: 300M
     ports:
       - name: grpc
         port: 18000
@@ -23,6 +23,7 @@ envoy-gw:
         port: 18001
         targetPort: 18001
     replicas: 1
+    priorityClassName: 'system-cluster-critical'
     pod:
       annotations: {}
       labels: {}
@@ -50,14 +51,6 @@ envoy-gw:
   createNamespace: false
 
   kubernetesClusterDomain: cluster.local
-
-  certgen:
-    job:
-      annotations: {}
-      ttlSecondsAfterFinished: 0
-    rbac:
-      annotations: {}
-      labels: {}
 
 purelb:
   enabled: true
@@ -233,7 +226,7 @@ purelb:
 
   # Optional priorityClass to use for both allocator and lbnodeagent pods.
   # https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
-  priorityClassName: ""
+  priorityClassName: system-cluster-critical
 
   # Configurable values specific to lbnodeagent.
   # See https://purelb.gitlab.io/purelb/install/config/
@@ -527,7 +520,7 @@ cilium:
       #   value: "value"
       #   effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
   # -- The priority class to use for cilium-agent.
-  priorityClassName: ""
+  priorityClassName: system-node-critical
   # -- DNS policy for Cilium agent pods.
   # Ref: https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
   dnsPolicy: ""
@@ -2914,7 +2907,7 @@ cilium:
     # -- Number of replicas to run for the cilium-operator deployment
     replicas: 1
     # -- The priority class to use for cilium-operator
-    priorityClassName: ""
+    priorityClassName: system-cluster-critical
     # -- DNS policy for Cilium operator pods.
     # Ref: https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
     dnsPolicy: ""
@@ -3867,7 +3860,7 @@ cilium:
             securityContext: {}
           server:
             # -- The priority class to use for the spire server
-            priorityClassName: ""
+            priorityClassName: 'system-cluster-critical'
             # -- SPIRE server image
             image:
               # @schema
@@ -4260,7 +4253,7 @@ external-dns:
   podLabels: {}
   ## @param priorityClassName priorityClassName
   ##
-  priorityClassName: ""
+  priorityClassName: 'system-cluster-critical'
   ## @param secretAnnotations Additional annotations to apply to the secret
   ##
   secretAnnotations: {}
