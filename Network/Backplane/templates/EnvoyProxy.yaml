@@ -17,6 +17,7 @@ spec:
           sinks:
             - type: OpenTelemetry
               openTelemetry:
+                port: 4317
                 backendRefs:
                   - group: ''
                     kind: Service
@@ -29,7 +30,9 @@ spec:
     tracing:
       # sample 1% of requests
       samplingRate: 1
+
       provider:
+        port: 4317
         backendRefs:
           - group: ''
             kind: Service
@@ -46,25 +49,19 @@ spec:
       envoyService:
         type: LoadBalancer
         externalTrafficPolicy: Local
+
       envoyDeployment:
         replicas: 2
           
         container:
           resources:
             requests:
-              cpu: 150m
-              memory: 640Mi
+              cpu: 58m
+              memory: 118M
             limits:
-              cpu: 500m
-              memory: 1Gi
+              cpu: 6312m
+              memory: 5603M
 
         pod:
           labels:
             logs: loki-myloginspace
-
-
-
-      #useListenerPortAsContainerPort: true
-
-      envoyService:
-        type: LoadBalancer
