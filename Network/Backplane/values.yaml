@@ -475,7 +475,7 @@ cilium:
   # -- Agent container name.
   name: cilium
   # -- Roll out cilium agent pods automatically when configmap is updated.
-  rollOutCiliumPods: false
+  rollOutCiliumPods: true
   # -- Agent container image.
   image:
     # @schema
@@ -2903,7 +2903,7 @@ cilium:
     # -- Enable the cilium-operator component (required).
     enabled: true
     # -- Roll out cilium-operator pods automatically when configmap is updated.
-    rollOutPods: false
+    rollOutPods: true
 
     # -- Number of replicas to run for the cilium-operator deployment
     replicas: 1
