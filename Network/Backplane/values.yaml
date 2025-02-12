@@ -928,7 +928,7 @@ cilium:
     # -- (bool) Configure the eBPF-based TPROXY (beta) to reduce reliance on iptables rules
     # for implementing Layer 7 policy.
     # @default -- `false`
-    tproxy: false
+    tproxy: true
     # @schema
     # type: [null, array]
     # @schema
