@@ -1682,13 +1682,8 @@ cilium:
         client:
           # -- Name of the Secret containing the certificate and key for the Hubble metrics server.
           # If specified, cert and key are ignored.
-          existingSecret: ""
-          # -- base64 encoded PEM values for the Hubble relay client certificate (deprecated).
-          # Use existingSecret instead.
-          cert: ""
-          # -- base64 encoded PEM values for the Hubble relay client key (deprecated).
-          # Use existingSecret instead.
-          key: ""
+          existingSecret: myloginspace-default-certificates
+
         # -- The hubble-relay server certificate and private key
         server:
           # When set to true, enable TLS on for Hubble Relay server
@@ -1700,22 +1695,8 @@ cilium:
           mtls: false
           # -- Name of the Secret containing the certificate and key for the Hubble relay server.
           # If specified, cert and key are ignored.
-          existingSecret: ""
-          # -- base64 encoded PEM values for the Hubble relay server certificate (deprecated).
-          # Use existingSecret instead.
-          cert: ""
-          # -- base64 encoded PEM values for the Hubble relay server key (deprecated).
-          # Use existingSecret instead.
-          key: ""
-          # -- extra DNS names added to certificate when its auto gen
-          extraDnsNames: []
-          # -- extra IP addresses added to certificate when its auto gen
-          extraIpAddresses: []
-          # DNS name used by the backend to connect to the relay
-          # This is a simple workaround as the relay certificates are currently hardcoded to
-          # *.hubble-relay.cilium.io
-          # See https://github.com/cilium/cilium/pull/28709#discussion_r1371792546
-          # For GKE Dataplane V2 this should be set to relay.kube-system.svc.cluster.local
+          existingSecret: myloginspace-default-certificates
+
           relayName: "ui.hubble-relay.dc1.mylogin.space"
       # @schema
       # type: [null, string]
@@ -1790,30 +1771,10 @@ cilium:
     ui:
       # -- Whether to enable the Hubble UI.
       enabled: true
-      standalone:
-        # -- When true, it will allow installing the Hubble UI only, without checking dependencies.
-        # It is useful if a cluster already has cilium and Hubble relay installed and you just
-        # want Hubble UI to be deployed.
-        # When installed via helm, installing UI should be done via `helm upgrade` and when installed via the cilium cli, then `cilium hubble enable --ui`
-        enabled: false
-        tls:
-          # -- When deploying Hubble UI in standalone, with tls enabled for Hubble relay, it is required
-          # to provide a volume for mounting the client certificates.
-          certsVolume: {}
-          #   projected:
-          #     defaultMode: 0400
-          #     sources:
-          #     - secret:
-          #         name: hubble-ui-client-certs
-          #         items:
-          #         - key: tls.crt
-          #           path: client.crt
-          #         - key: tls.key
-          #           path: client.key
-          #         - key: ca.crt
-          #           path: hubble-relay-ca.crt
+
       # -- Roll out Hubble-ui pods automatically when configmap is updated.
-      rollOutPods: false
+      rollOutPods: true
+
       tls:
         client:
           # -- Name of the Secret containing the client certificate and key for Hubble UI
@@ -1823,54 +1784,7 @@ cilium:
       # -- The number of replicas of Hubble UI to deploy.
       replicas: 1
 
-    # -- Hubble flows export.
-    export:
-      # --- Defines max file size of output file before it gets rotated.
-      fileMaxSizeMb: 10
-      # --- Defines max number of backup/rotated files.
-      fileMaxBackups: 5
-      # --- Static exporter configuration.
-      # Static exporter is bound to agent lifecycle.
-      static:
-        enabled: false
-        filePath: /var/run/cilium/hubble/events.log
-        fieldMask: []
-        # - time
-        # - source
-        # - destination
-        # - verdict
-        allowList: []
-        # - '{"verdict":["DROPPED","ERROR"]}'
-        denyList: []
-        # - '{"source_pod":["kube-system/"]}'
-        # - '{"destination_pod":["kube-system/"]}'
-      # --- Dynamic exporters configuration.
-      # Dynamic exporters may be reconfigured without a need of agent restarts.
-      dynamic:
-        enabled: false
-        config:
-          # ---- Name of configmap with configuration that may be altered to reconfigure exporters within a running agents.
-          configMapName: cilium-flowlog-config
-          # ---- True if helm installer should create config map.
-          # Switch to false if you want to self maintain the file content.
-          createConfigMap: true
-          # ---- Exporters configuration in YAML format.
-          content:
-            - name: all
-              fieldMask: []
-              includeFilters: []
-              excludeFilters: []
-              filePath: "/var/run/cilium/hubble/events.log"
-              #   - name: "test002"
-              #     filePath: "/var/log/network/flow-log/pa/test002.log"
-              #     fieldMask: ["source.namespace", "source.pod_name", "destination.namespace", "destination.pod_name", "verdict"]
-              #     includeFilters:
-              #     - source_pod: ["default/"]
-              #       event_type:
-              #       - type: 1
-              #     - destination_pod: ["frontend/nginx-975996d4c-7hhgt"]
-              #     excludeFilters: []
-              #     end: "2023-10-09T23:59:59-07:00"
+
     # -- Emit v1.Events related to pods on detection of packet drops.
     #    This feature is alpha, please provide feedback at https://github.com/cilium/cilium/issues/33975.
     dropEventEmitter:
@@ -1882,6 +1796,7 @@ cilium:
       reasons:
         - auth_required
         - policy_denied
+
   # -- Method to use for identity allocation (`crd`, `kvstore` or `doublewrite-readkvstore` / `doublewrite-readcrd` for migrating between identity backends).
   identityAllocationMode: "crd"
   # -- (string) Time to wait before using new identity on endpoint identity change.
