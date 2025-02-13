@@ -1677,7 +1677,7 @@ cilium:
           mtls: false
           # -- Name of the Secret containing the certificate and key for the Hubble relay server.
           # If specified, cert and key are ignored.
-          existingSecret: myloginspace-default-certificates
+          existingSecret: hubble-relay-certs
 
           relayName: "ui.hubble-relay.dc1.mylogin.space"
       # @schema
@@ -1761,7 +1761,7 @@ cilium:
         client:
           # -- Name of the Secret containing the client certificate and key for Hubble UI
           # If specified, cert and key are ignored.
-          existingSecret: myloginspace-default-certificates
+          existingSecret: hubble-certs
 
       # -- The number of replicas of Hubble UI to deploy.
       replicas: 1
