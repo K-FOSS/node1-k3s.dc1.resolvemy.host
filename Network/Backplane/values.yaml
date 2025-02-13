@@ -1627,7 +1627,7 @@ cilium:
       # -- Enable mutual TLS for listenAddress. Setting this value to false is
       # highly discouraged as the Hubble API provides access to potentially
       # sensitive network flow metadata and is exposed on the host network.
-      enabled: true
+      enabled: false
       # -- Configure automatic TLS certificates generation.
       auto:
         # -- Auto-generate certificates.
@@ -1644,125 +1644,13 @@ cilium:
     relay:
       # -- Enable Hubble Relay (requires hubble.enabled=true)
       enabled: true
-      # -- Roll out Hubble Relay pods automatically when configmap is updated.
-      rollOutPods: true
 
-      # -- The priority class to use for hubble-relay
-      priorityClassName: ""
-
-      # -- Host to listen to. Specify an empty string to bind to all the interfaces.
-      listenHost: ""
-
-      # -- Port to listen to.
-      listenPort: "4245"
-
-      # -- TLS configuration for Hubble Relay
-      tls:
-        # -- The hubble-relay client certificate and private key.
-        # This keypair is presented to Hubble server instances for mTLS
-        # authentication and is required when hubble.tls.enabled is true.
-        # These values need to be set manually if hubble.tls.auto.enabled is false.
-        client:
-          # -- Name of the Secret containing the certificate and key for the Hubble metrics server.
-          # If specified, cert and key are ignored.
-          existingSecret: myloginspace-default-certificates
-
-        # -- The hubble-relay server certificate and private key
-        server:
-          # When set to true, enable TLS on for Hubble Relay server
-          # (ie: for clients connecting to the Hubble Relay API).
-          enabled: true
-          # When set to true enforces mutual TLS between Hubble Relay server and its clients.
-          # False allow non-mutual TLS connections.
-          # This option has no effect when TLS is disabled.
-          mtls: false
-          # -- Name of the Secret containing the certificate and key for the Hubble relay server.
-          # If specified, cert and key are ignored.
-          existingSecret: hubble-relay-certs
-
-          relayName: "ui.hubble-relay.dc1.mylogin.space"
-      # @schema
-      # type: [null, string]
-      # @schema
-      # -- Dial timeout to connect to the local hubble instance to receive peer information (e.g. "30s").
-      #
-      # This option has been deprecated and is a no-op.
-      dialTimeout: ~
-      # @schema
-      # type: [null, string]
-      # @schema
-      # -- Backoff duration to retry connecting to the local hubble instance in case of failure (e.g. "30s").
-      retryTimeout: ~
-      # @schema
-      # type: [null, integer]
-      # @schema
-      # -- (int) Max number of flows that can be buffered for sorting before being sent to the
-      # client (per request) (e.g. 100).
-      sortBufferLenMax: ~
-      # @schema
-      # type: [null, string]
-      # @schema
-      # -- When the per-request flows sort buffer is not full, a flow is drained every
-      # time this timeout is reached (only affects requests in follow-mode) (e.g. "1s").
-      sortBufferDrainTimeout: ~
-      # -- Port to use for the k8s service backed by hubble-relay pods.
-      # If not set, it is dynamically assigned to port 443 if TLS is enabled and to
-      # port 80 if not.
-      # servicePort: 80
-
-      # -- Enable prometheus metrics for hubble-relay on the configured port at
-      # /metrics
-      prometheus:
-        enabled: false
-        port: 9966
-        serviceMonitor:
-          # -- Enable service monitors.
-          # This requires the prometheus CRDs to be available (see https://github.com/prometheus-operator/prometheus-operator/blob/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml)
-          enabled: false
-          # -- Labels to add to ServiceMonitor hubble-relay
-          labels: {}
-          # -- Annotations to add to ServiceMonitor hubble-relay
-          annotations: {}
-          # -- Interval for scrape metrics.
-          interval: "10s"
-          # -- Specify the Kubernetes namespace where Prometheus expects to find
-          # service monitors configured.
-          # namespace: ""
-          # @schema
-          # type: [null, array]
-          # @schema
-          # -- Relabeling configs for the ServiceMonitor hubble-relay
-          relabelings: ~
-          # @schema
-          # type: [null, array]
-          # @schema
-          # -- Metrics relabeling configs for the ServiceMonitor hubble-relay
-          metricRelabelings: ~
-      gops:
-        # -- Enable gops for hubble-relay
-        enabled: true
-        # -- Configure gops listen port for hubble-relay
-        port: 9893
-
-      pprof:
-        # -- Enable pprof for hubble-relay
-        enabled: false
-        # -- Configure pprof listen address for hubble-relay
-        address: localhost
-        # -- Configure pprof listen port for hubble-relay
-        port: 6062
     ui:
       # -- Whether to enable the Hubble UI.
       enabled: true
 
       # -- Roll out Hubble-ui pods automatically when configmap is updated.
       rollOutPods: true
-
-      tls:
-        client:
-          # -- Name of the Secret containing the client certificate and key for Hubble UI
-          # If specified, cert and key are ignored.
-          existingSecret: hubble-certs
 
       # -- The number of replicas of Hubble UI to deploy.
       replicas: 1
