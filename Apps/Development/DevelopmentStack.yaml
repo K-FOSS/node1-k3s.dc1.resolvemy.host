@@ -24,6 +24,8 @@ spec:
     spec:
       project: core
 
+      revisionHistoryLimit: 3
+
       syncPolicy:
         syncOptions:
           - ServerSideApply=true
