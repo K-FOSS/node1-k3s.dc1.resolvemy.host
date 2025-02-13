@@ -1621,7 +1621,7 @@ cilium:
       targetPort: 4244
       # -- The cluster domain to use to query the Hubble Peer service. It should
       # be the local cluster.
-      clusterDomain: k3s.dc1.resolvemy.host
+      clusterDomain: cluster.local
     # -- TLS configuration for Hubble
     tls:
       # -- Enable mutual TLS for listenAddress. Setting this value to false is
