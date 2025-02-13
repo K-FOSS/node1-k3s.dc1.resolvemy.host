@@ -1814,6 +1814,11 @@ cilium:
           #           path: hubble-relay-ca.crt
       # -- Roll out Hubble-ui pods automatically when configmap is updated.
       rollOutPods: false
+      tls:
+        client:
+          # -- Name of the Secret containing the client certificate and key for Hubble UI
+          # If specified, cert and key are ignored.
+          existingSecret: myloginspace-default-certificates
 
       # -- The number of replicas of Hubble UI to deploy.
       replicas: 1
