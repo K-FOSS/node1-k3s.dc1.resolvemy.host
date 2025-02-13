@@ -194,7 +194,7 @@ cert-manager:
   # automountServiceAccountToken: true
 
   # When this flag is enabled, secrets will be automatically removed when the certificate resource is deleted.
-  enableCertificateOwnerRef: false
+  enableCertificateOwnerRef: true
 
   # This property is used to configure options for the controller pod.
   # This allows setting options that would usually be provided using flags.
