@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hubble-relay
+spec:
+  issuerRef:
+    name: kjdev-cluster
+    kind: ClusterIssuer
+
+  secretName: hubble-relay-certs
+
+  commonName: 'hubble.k3s.dc1.resolvemy.host'
+  dnsNames:
+    - 'hubble.k3s.dc1.resolvemy.host'
+
