@@ -1395,8 +1395,7 @@ cilium:
   hubble:
     # -- Enable Hubble (true by default).
     enabled: true
-    # -- Annotations to be added to all top-level hubble objects (resources under templates/hubble)
-    annotations: {}
+
     # -- Buffer size of the channel Hubble uses to receive monitor events. If this
     # value is not set, the queue size is set to the default monitor queue size.
     eventQueueSize: 32768
@@ -1430,7 +1429,7 @@ cilium:
       #
       #   --set hubble.metrics.enabled="{dns:query;ignoreAAAA,drop,tcp,flow,icmp,http}"
       #
-      enabled: ~
+      enabled: false
       # -- Enables exporting hubble metrics in OpenMetrics format.
       enableOpenMetrics: false
       # -- Configure the port the hubble metric server listens on.
@@ -1642,27 +1641,13 @@ cilium:
         #                 certificates not provided by the user at installation
         #                 time.
         # - certmanager:  This method use cert-manager to generate & rotate certificates.
-        method: helm
-        # -- Generated certificates validity duration in days.
-        #
-        # Defaults to 365 days (1 year) because MacOS does not accept
-        # self-signed certificates with expirations > 825 days.
-        certValidityDuration: 365
-        # -- Schedule for certificates regeneration (regardless of their expiration date).
-        # Only used if method is "cronJob". If nil, then no recurring job will be created.
-        # Instead, only the one-shot job is deployed to generate the certificates at
-        # installation time.
-        #
-        # Defaults to midnight of the first day of every fourth month. For syntax, see
-        # https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#schedule-syntax
-        schedule: "0 0 1 */4 *"
-        # [Example]
-        # certManagerIssuerRef:
-        #   group: cert-manager.io
-        #   kind: ClusterIssuer
-        #   name: ca-issuer
-        # -- certmanager issuer used when hubble.tls.auto.method=certmanager.
-        certManagerIssuerRef: {}
+        method: certmanager
+
+        certManagerIssuerRef:
+          group: cert-manager.io
+          kind: ClusterIssuer
+          name: kjdev-cluster
+
       # -- The Hubble server certificate and private key
       server:
         # -- Name of the Secret containing the certificate and key for the Hubble server.
@@ -1684,93 +1669,15 @@ cilium:
       # -- Roll out Hubble Relay pods automatically when configmap is updated.
       rollOutPods: true
 
-      # -- Specifies the resources for the hubble-relay pods
-      resources: {}
-      # -- Number of replicas run for the hubble-relay deployment.
-      replicas: 1
-      # -- Affinity for hubble-replay
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - topologyKey: kubernetes.io/hostname
-              labelSelector:
-                matchLabels:
-                  k8s-app: cilium
-      # -- Pod topology spread constraints for hubble-relay
-      topologySpreadConstraints: []
-      #   - maxSkew: 1
-      #     topologyKey: topology.kubernetes.io/zone
-      #     whenUnsatisfiable: DoNotSchedule
-
-      # -- Node labels for pod assignment
-      # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-      nodeSelector:
-        kubernetes.io/os: linux
-      # -- Node tolerations for pod assignment on nodes with taints
-      # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
-      tolerations: []
-      # -- Additional hubble-relay environment variables.
-      extraEnv: []
-      # -- Annotations to be added to all top-level hubble-relay objects (resources under templates/hubble-relay)
-      annotations: {}
-      # -- Annotations to be added to hubble-relay pods
-      podAnnotations: {}
-      # -- Labels to be added to hubble-relay pods
-      podLabels: {}
-      # PodDisruptionBudget settings
-      podDisruptionBudget:
-        # -- enable PodDisruptionBudget
-        # ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
-        enabled: false
-        # @schema
-        # type: [null, integer, string]
-        # @schema
-        # -- Minimum number/percentage of pods that should remain scheduled.
-        # When it's set, maxUnavailable must be disabled by `maxUnavailable: null`
-        minAvailable: null
-        # @schema
-        # type: [null, integer, string]
-        # @schema
-        # -- Maximum number/percentage of pods that may be made unavailable
-        maxUnavailable: 1
       # -- The priority class to use for hubble-relay
       priorityClassName: ""
-      # -- Configure termination grace period for hubble relay Deployment.
-      terminationGracePeriodSeconds: 1
-      # -- hubble-relay update strategy
-      updateStrategy:
-        type: RollingUpdate
-        rollingUpdate:
-          # @schema
-          # type: [integer, string]
-          # @schema
-          maxUnavailable: 1
-      # -- Additional hubble-relay volumes.
-      extraVolumes: []
-      # -- Additional hubble-relay volumeMounts.
-      extraVolumeMounts: []
-      # -- hubble-relay pod security context
-      podSecurityContext:
-        fsGroup: 65532
-      # -- hubble-relay container security context
-      securityContext:
-        # readOnlyRootFilesystem: true
-        runAsNonRoot: true
-        runAsUser: 65532
-        runAsGroup: 65532
-        capabilities:
-          drop:
-            - ALL
-      # -- hubble-relay service configuration.
-      service:
-        # --- The type of service used for Hubble Relay access, either ClusterIP, NodePort or LoadBalancer.
-        type: ClusterIP
-        # --- The port to use when the service type is set to NodePort.
-        nodePort: 31234
+
       # -- Host to listen to. Specify an empty string to bind to all the interfaces.
       listenHost: ""
+
       # -- Port to listen to.
       listenPort: "4245"
+
       # -- TLS configuration for Hubble Relay
       tls:
         # -- The hubble-relay client certificate and private key.
@@ -1791,7 +1698,7 @@ cilium:
         server:
           # When set to true, enable TLS on for Hubble Relay server
           # (ie: for clients connecting to the Hubble Relay API).
-          enabled: false
+          enabled: true
           # When set to true enforces mutual TLS between Hubble Relay server and its clients.
           # False allow non-mutual TLS connections.
           # This option has no effect when TLS is disabled.
@@ -1814,7 +1721,7 @@ cilium:
           # *.hubble-relay.cilium.io
           # See https://github.com/cilium/cilium/pull/28709#discussion_r1371792546
           # For GKE Dataplane V2 this should be set to relay.kube-system.svc.cluster.local
-          relayName: "ui.hubble-relay.cilium.io"
+          relayName: "ui.hubble-relay.dc1.mylogin.space"
       # @schema
       # type: [null, string]
       # @schema
@@ -1877,6 +1784,7 @@ cilium:
         enabled: true
         # -- Configure gops listen port for hubble-relay
         port: 9893
+
       pprof:
         # -- Enable pprof for hubble-relay
         enabled: false
@@ -1911,162 +1819,10 @@ cilium:
           #           path: hubble-relay-ca.crt
       # -- Roll out Hubble-ui pods automatically when configmap is updated.
       rollOutPods: false
-      tls:
-        client:
-          # -- Name of the Secret containing the client certificate and key for Hubble UI
-          # If specified, cert and key are ignored.
-          existingSecret: ""
-          # -- base64 encoded PEM values for the Hubble UI client certificate (deprecated).
-          # Use existingSecret instead.
-          cert: ""
-          # -- base64 encoded PEM values for the Hubble UI client key (deprecated).
-          # Use existingSecret instead.
-          key: ""
-      backend:
-        # -- Hubble-ui backend image.
-        image:
-          # @schema
-          # type: [null, string]
-          # @schema
-          override: ~
-          useDigest: true
-          pullPolicy: "IfNotPresent"
-        # -- Hubble-ui backend security context.
-        securityContext: {}
-        # -- Additional hubble-ui backend environment variables.
-        extraEnv: []
-        # -- Additional hubble-ui backend volumes.
-        extraVolumes: []
-        # -- Additional hubble-ui backend volumeMounts.
-        extraVolumeMounts: []
-        livenessProbe:
-          # -- Enable liveness probe for Hubble-ui backend (requires Hubble-ui 0.12+)
-          enabled: false
-        readinessProbe:
-          # -- Enable readiness probe for Hubble-ui backend (requires Hubble-ui 0.12+)
-          enabled: false
-        # -- Resource requests and limits for the 'backend' container of the 'hubble-ui' deployment.
-        resources: {}
-        #   limits:
-        #     cpu: 1000m
-        #     memory: 1024M
-        #   requests:
-        #     cpu: 100m
-        #     memory: 64Mi
-      frontend:
-        # -- Hubble-ui frontend image.
-        image:
-          # @schema
-          # type: [null, string]
-          # @schema
-          override: ~
-          repository: "quay.io/cilium/hubble-ui"
-          tag: "v0.13.1"
-          digest: "sha256:e2e9313eb7caf64b0061d9da0efbdad59c6c461f6ca1752768942bfeda0796c6"
-          useDigest: true
-          pullPolicy: "IfNotPresent"
-        # -- Hubble-ui frontend security context.
-        securityContext: {}
-        # -- Additional hubble-ui frontend environment variables.
-        extraEnv: []
-        # -- Additional hubble-ui frontend volumes.
-        extraVolumes: []
-        # -- Additional hubble-ui frontend volumeMounts.
-        extraVolumeMounts: []
-        # -- Resource requests and limits for the 'frontend' container of the 'hubble-ui' deployment.
-        resources: {}
-        #   limits:
-        #     cpu: 1000m
-        #     memory: 1024M
-        #   requests:
-        #     cpu: 100m
-        #     memory: 64Mi
-        server:
-          # -- Controls server listener for ipv6
-          ipv6:
-            enabled: true
+
       # -- The number of replicas of Hubble UI to deploy.
       replicas: 1
-      # -- Annotations to be added to all top-level hubble-ui objects (resources under templates/hubble-ui)
-      annotations: {}
-      # -- Additional labels to be added to 'hubble-ui' deployment object
-      labels: {}
-      # -- Annotations to be added to hubble-ui pods
-      podAnnotations: {}
-      # -- Labels to be added to hubble-ui pods
-      podLabels: {}
-      # PodDisruptionBudget settings
-      podDisruptionBudget:
-        # -- enable PodDisruptionBudget
-        # ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
-        enabled: false
-        # @schema
-        # type: [null, integer, string]
-        # @schema
-        # -- Minimum number/percentage of pods that should remain scheduled.
-        # When it's set, maxUnavailable must be disabled by `maxUnavailable: null`
-        minAvailable: null
-        # @schema
-        # type: [null, integer, string]
-        # @schema
-        # -- Maximum number/percentage of pods that may be made unavailable
-        maxUnavailable: 1
-      # -- Affinity for hubble-ui
-      affinity: {}
-      # -- Pod topology spread constraints for hubble-ui
-      topologySpreadConstraints: []
-      #   - maxSkew: 1
-      #     topologyKey: topology.kubernetes.io/zone
-      #     whenUnsatisfiable: DoNotSchedule
 
-      # -- Node labels for pod assignment
-      # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-      nodeSelector:
-        kubernetes.io/os: linux
-      # -- Node tolerations for pod assignment on nodes with taints
-      # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
-      tolerations: []
-      # -- The priority class to use for hubble-ui
-      priorityClassName: ""
-      # -- hubble-ui update strategy.
-      updateStrategy:
-        type: RollingUpdate
-        rollingUpdate:
-          # @schema
-          # type: [integer, string]
-          # @schema
-          maxUnavailable: 1
-      # -- Security context to be added to Hubble UI pods
-      securityContext:
-        runAsUser: 1001
-        runAsGroup: 1001
-        fsGroup: 1001
-      # -- hubble-ui service configuration.
-      service:
-        # -- Annotations to be added for the Hubble UI service
-        annotations: {}
-        # --- The type of service used for Hubble UI access, either ClusterIP or NodePort.
-        type: ClusterIP
-        # --- The port to use when the service type is set to NodePort.
-        nodePort: 31235
-      # -- Defines base url prefix for all hubble-ui http requests.
-      # It needs to be changed in case if ingress for hubble-ui is configured under some sub-path.
-      # Trailing `/` is required for custom path, ex. `/service-map/`
-      baseUrl: "/"
-      # -- hubble-ui ingress configuration.
-      ingress:
-        enabled: false
-        annotations: {}
-        # kubernetes.io/ingress.class: nginx
-        # kubernetes.io/tls-acme: "true"
-        className: ""
-        hosts:
-          - chart-example.local
-        labels: {}
-        tls: []
-        #  - secretName: chart-example-tls
-        #    hosts:
-        #      - chart-example.local
     # -- Hubble flows export.
     export:
       # --- Defines max file size of output file before it gets rotated.
