@@ -9,7 +9,7 @@ spec:
 
   secretName: hubble-relay-certs
 
-  commonName: 'hubble.k3s.dc1.resolvemy.host'
+  commonName: '*.hubble.k3s.dc1.resolvemy.host'
   dnsNames:
-    - 'hubble.k3s.dc1.resolvemy.host'
+    - '*.hubble.k3s.dc1.resolvemy.host'
 
