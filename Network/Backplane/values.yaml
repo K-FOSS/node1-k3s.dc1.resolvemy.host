@@ -1429,7 +1429,7 @@ cilium:
       #
       #   --set hubble.metrics.enabled="{dns:query;ignoreAAAA,drop,tcp,flow,icmp,http}"
       #
-      enabled: false
+      enabled: null
       # -- Enables exporting hubble metrics in OpenMetrics format.
       enableOpenMetrics: false
       # -- Configure the port the hubble metric server listens on.
