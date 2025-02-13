@@ -6,6 +6,7 @@ metadata:
 
   annotations:
     argocd.argoproj.io/sync-wave: '0'
+    argocd.argoproj.io/manifest-generate-paths: .
 
 spec:
   project: default
