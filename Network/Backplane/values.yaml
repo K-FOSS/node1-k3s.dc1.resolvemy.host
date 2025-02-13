@@ -551,6 +551,7 @@ cilium:
   extraConfig:
     bpf-ct-timeout-regular-any: 1h0m0s
     bpf-ct-timeout-service-any: 1h0m0s
+    hubble-tls-client-ca-files: /var/lib/cilium/tls/hubble/server.crt
   #  my-config-a: "1234"
   #  my-config-b: |-
   #    test 1
