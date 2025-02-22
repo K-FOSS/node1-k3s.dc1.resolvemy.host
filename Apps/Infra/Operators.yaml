@@ -30,6 +30,8 @@ spec:
         - group: operators.coreos.com
           kind: ClusterServiceVersion
           name: packageserver
+          jsonPointers:
+            - /spec/install/spec/deployments/0/spec/templates/metadata/creationTimestamp
 
       source:
         path: Operations/Operators
