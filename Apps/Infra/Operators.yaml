@@ -4,6 +4,8 @@ metadata:
   name: core-backplane-ops-operators
   namespace: argocd
 
+  annotations:
+    argocd.argoproj.io/sync-wave: '0'
 spec:
   generators:
     - list:

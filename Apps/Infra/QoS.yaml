@@ -3,6 +3,9 @@ kind: ApplicationSet
 metadata:
   name: core-backplane-qos
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '1'
 spec:
 
   generators:
