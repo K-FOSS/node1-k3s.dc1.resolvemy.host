@@ -3,6 +3,9 @@ kind: ApplicationSet
 metadata:
   name: core-backplane-storage-s3-deploy
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '0'
 spec:
   generators:
     - list:

@@ -3,6 +3,10 @@ kind: ApplicationSet
 metadata:
   name: core-backplane-storage-db-psql
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '5'
+
 spec:
   generators:
     - list:

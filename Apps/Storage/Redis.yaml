@@ -3,6 +3,9 @@ kind: ApplicationSet
 metadata:
   name: core-backplane-keydb-core
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '0'
 spec:
   generators:
     - list:

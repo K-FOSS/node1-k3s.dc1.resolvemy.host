@@ -3,6 +3,10 @@ kind: ApplicationSet
 metadata:
   name: core-backplane-aaa-deploy
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '20'
+
 spec:
   generators:
     - list:

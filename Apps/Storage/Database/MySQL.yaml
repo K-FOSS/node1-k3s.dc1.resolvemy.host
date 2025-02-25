@@ -4,6 +4,9 @@ kind: ApplicationSet
 metadata:
   name: core-backplane-storage-db-mysql
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '5'
 spec:
   generators:
     - list:
