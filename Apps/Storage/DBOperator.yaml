@@ -4,6 +4,9 @@ metadata:
   name: core-backplane-storage-db-operator
   namespace: argocd
 
+  labels:
+    resolvemy.host/env: 'prod'
+
   annotations:
     argocd.argoproj.io/sync-wave: '0'
 spec:
