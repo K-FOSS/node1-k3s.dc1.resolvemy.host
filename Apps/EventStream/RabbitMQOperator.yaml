@@ -4,6 +4,10 @@ kind: ApplicationSet
 metadata:
   name: core-backplane-rabbitmq-operator
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '20'
+
 spec:
   generators:
     - list:

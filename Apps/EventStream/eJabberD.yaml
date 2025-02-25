@@ -4,6 +4,10 @@ kind: ApplicationSet
 metadata:
   name: core-backplane-ejabberd
   namespace: argocd
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '5'
+
 spec:
   generators:
     - list:
