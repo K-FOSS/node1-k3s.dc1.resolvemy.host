@@ -483,11 +483,7 @@ cilium:
     # @schema
     override: ~
     repository: "quay.io/cilium/cilium"
-    tag: "v1.17.0-rc.1"
     pullPolicy: "IfNotPresent"
-    # cilium-digest
-    digest: "sha256:a6e0b8285dc7979e89d2cec34fbd0c5997a459f1870ebd42c8ece3e061cf5f7e"
-    useDigest: true
   # -- Scheduling configurations for cilium pods
   scheduling:
     # @schema
