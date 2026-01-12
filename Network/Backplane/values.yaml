@@ -1978,7 +1978,7 @@ cilium:
   # -- Configure prometheus metrics on the configured port at /metrics
   prometheus:
     metricsService: true
-    enabled: true
+    enabled: false
     port: 9962
     serviceMonitor:
       # -- Enable service monitors.
