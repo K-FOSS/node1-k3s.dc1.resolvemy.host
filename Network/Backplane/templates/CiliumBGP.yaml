@@ -49,11 +49,10 @@ spec:
 #           localAddress: 192.168.4.71
 
 ---
-apiVersion: cilium.io/v2
-kind: CiliumBGPClusterConfig
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPNodeConfig
 metadata:
-  name: cilium-bgp-cluster
-  namespace: kube-system
+  name: node1.dc1.resolvemy.host
 spec:
   bgpInstances:
     - localASN: 64599
@@ -63,16 +62,23 @@ spec:
         - name: frr
           peerASN: 64512
           peerAddress: 127.0.0.1
+          localAddress: 127.0.0.1
           peerConfigRef:
             name: local-peer
-    - name: main
-      localASN: 64512
+    - localASN: 64512
+      name: main
       peers:
         - name: wan-sw1.dc1.resolvemy.host
-          peerAddress: 172.31.241.237
           peerASN: 64567
+          peerAddress: 172.31.241.237
           peerConfigRef:
             name: default
+        - name: rs0.dc1.resolvemy.host
+          peerASN: 64567
+          peerAddress: 10.1.1.179
+          peerConfigRef:
+            name: default
+
 ---
 apiVersion: cilium.io/v2
 kind: CiliumBGPPeerConfig
