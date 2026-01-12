@@ -56,6 +56,16 @@ metadata:
   namespace: kube-system
 spec:
   bgpInstances:
+    - localASN: 64599
+      localPort: 1180
+      name: local
+      peers:
+        - localAddress: 127.0.0.1
+          name: frr
+          peerASN: 64512
+          peerAddress: 127.0.0.1
+          peerConfigRef:
+            name: local-peer
     - name: main
       localASN: 64512
       peers:
