@@ -60,7 +60,7 @@ spec:
       localPort: 1180
       name: local
       peers:
-          name: frr
+        - name: frr
           peerASN: 64512
           peerAddress: 127.0.0.1
           peerConfigRef:
