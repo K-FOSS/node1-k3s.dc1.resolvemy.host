@@ -64,3 +64,29 @@ spec:
           peerASN: 64567
           peerConfigRef:
             name: default
+---
+apiVersion: cilium.io/v2
+kind: CiliumBGPPeerConfig
+metadata:
+  name: local-peer
+  namespace: kube-system
+
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  transport:
+    peerPort: 179
+    sourceInterface: 'lo'
+
+  families:
+    - afi: ipv4
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: 'bgp'
+
+    - afi: ipv6
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: 'bgp'
