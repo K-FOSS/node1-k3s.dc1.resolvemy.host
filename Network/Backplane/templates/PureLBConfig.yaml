@@ -5,7 +5,7 @@ metadata:
 spec:
   local:
     v4pools:
-      - subnet: 66.165.222.96/27
+      - subnet: 66.165.222.102/32
         pool: 66.165.222.102/32
         aggregation: default
 ---
@@ -16,20 +16,44 @@ metadata:
 spec:
   local:
     v4pools:
-      - subnet: 10.1.1.0/24
-        pool: 10.1.1.0/24
+      - subnet: 10.1.1.14/32
+        pool: 10.1.1.14/32
         aggregation: default
-    
-      - subnet: 66.165.222.96/27
+
+      - subnet: 10.1.1.65/32
+        pool: 10.1.1.65/32
+        aggregation: default
+
+      - subnet: 10.1.1.66/32
+        pool: 10.1.1.66/32
+        aggregation: default
+
+      - subnet: 10.1.1.67/32
+        pool: 10.1.1.67/32
+        aggregation: default
+
+      - subnet: 10.1.1.53/32
+        pool: 10.1.1.53/32
+        aggregation: default
+
+      - subnet: 10.1.1.153/32
+        pool: 10.1.1.153/32
+        aggregation: default
+
+      - subnet: 66.165.222.100/32
         pool: 66.165.222.100/32
         aggregation: default
 
       # ns1.resolvemy.host
-      - subnet: 66.165.222.96/27
+      - subnet: 66.165.222.105/32
         pool: 66.165.222.105/32
         aggregation: default
 
-      - subnet: 66.165.222.96/27
-        pool: 66.165.222.110-66.165.222.127
+      - subnet: 66.165.222.115/32
+        pool: 66.165.222.115/32
+        aggregation: default
+
+      - subnet: 66.165.222.117/32
+        pool: 66.165.222.117/32
         aggregation: default
 ---
