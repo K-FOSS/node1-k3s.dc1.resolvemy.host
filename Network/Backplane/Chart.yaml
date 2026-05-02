@@ -4,7 +4,7 @@ name: dc1-k3s-network-backplane
 
 dependencies:
   - name: cilium
-    version: '1.19.0-pre.4'
+    version: '1.19.3'
     repository: https://helm.cilium.io/
 
   - name: external-dns
