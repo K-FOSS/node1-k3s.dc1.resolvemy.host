@@ -6,7 +6,7 @@ metadata:
 spec:
   telemetry:
     accessLog:
-      disable: false
+      disable: true
       settings:
         - format:
             type: JSON
@@ -29,7 +29,7 @@ spec:
                   k8s.cluster.name: "dc1-k3s"
     tracing:
       # sample 1% of requests
-      samplingRate: 1
+      samplingRate: 0
 
       provider:
         port: 4317
