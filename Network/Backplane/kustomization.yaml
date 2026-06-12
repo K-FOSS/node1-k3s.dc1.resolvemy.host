@@ -3,3 +3,4 @@ kind: Kustomization
 
 resources:
   - https://raw.githubusercontent.com/k8snetworkplumbingwg/sriov-cni/refs/heads/master/images/sriov-cni-daemonset.yaml
+  - https://raw.githubusercontent.com/k8snetworkplumbingwg/sriov-network-device-plugin/refs/heads/master/deployments/sriovdp-daemonset.yaml
