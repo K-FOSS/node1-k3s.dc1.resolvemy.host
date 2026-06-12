@@ -3981,3 +3981,9 @@ external-dns:
       ## @param metrics.serviceMonitor.jobLabel The name of the label on the target service to use as the job name in prometheus.
       ##
       jobLabel: ""
+
+sriov-network-operator:
+  sriovOperatorConfig:
+    deploy: true
+
+    disableDrain: true
