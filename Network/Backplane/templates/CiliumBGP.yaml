@@ -26,6 +26,9 @@ metadata:
   name: default
   namespace: kube-system
 spec:
+  gracefulRestart:
+    enabled: true
+    restartTimeSeconds: 120
   families:
     - afi: ipv4
       safi: unicast
