@@ -77,11 +77,18 @@ spec:
     - localASN: 64512
       name: main
       peers:
-        - name: wan-sw1.dc1.resolvemy.host
+        - name: ipv4.vlan2010.spine-sw1.dc1.yxl.resolvemy.host
           peerASN: 64567
           peerAddress: 172.31.241.237
           peerConfigRef:
             name: default
+
+        - name: ipv6.vlan2010.spine-sw1.dc1.yxl.resolvemy.host
+          peerASN: 64567
+          peerAddress: '2a11:6c7:2600:2900::'
+          peerConfigRef:
+            name: default
+
         - name: rs0.dc1.resolvemy.host
           peerASN: 64567
           peerAddress: 10.1.1.179
