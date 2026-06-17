@@ -1683,7 +1683,7 @@ cilium:
       # type: [array, string]
       # @schema
       # -- IPv6 CIDR list range to delegate to individual nodes for IPAM.
-      clusterPoolIPv6PodCIDRList: ["2a11:6c7:2600:2910::/64"]
+      clusterPoolIPv6PodCIDRList: ["2a11:6c7:2600:2910::/104"]
       # -- IPv6 CIDR mask size to delegate to individual nodes for IPAM.
       clusterPoolIPv6MaskSize: 120
       # -- IP pools to auto-create in multi-pool IPAM mode.
