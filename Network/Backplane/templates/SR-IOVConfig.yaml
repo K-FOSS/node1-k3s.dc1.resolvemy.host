@@ -8,7 +8,19 @@ data:
     {
       "resourceList": [
         {
-          "resourceName": "intel_xxv710_vfio",
+          "resourceName": "intel_xxv710_vfio_port0",
+          "resourcePrefix": "intel.com",
+          "selectors": [
+            {
+              "vendors": ["8086"],
+              "devices": ["154c"],
+              "drivers": ["vfio-pci"],
+              "pfNames": ["enp5s0f0np0"]
+            }
+          ]
+        },
+        {
+          "resourceName": "intel_xxv710_vfio_port1",
           "resourcePrefix": "intel.com",
           "selectors": [
             {
@@ -27,7 +39,7 @@ data:
               "vendors": ["8086"],
               "devices": ["154c"],
               "drivers": ["iavf"],
-              "pfNames": ["enp5s0f0np0"]
+              "pfNames": ["enp5s0f0np0#2,4-5,7"]
             }
           ]
         },
@@ -39,7 +51,7 @@ data:
               "vendors": ["8086"],
               "devices": ["154c"],
               "drivers": ["iavf"],
-              "pfNames": ["enp5s0f1np1"]
+              "pfNames": ["enp5s0f1np1#5-30"]
             }
           ]
         }
