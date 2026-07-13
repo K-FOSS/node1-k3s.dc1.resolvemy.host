@@ -2379,7 +2379,7 @@ cilium:
   #   - vxlan
   #   - geneve
   # @default -- `"vxlan"`
-  tunnelProtocol: ''
+  tunnelProtocol: 'geneve'
 
   # -- Enable native-routing mode or tunneling mode.
   # Possible values:
