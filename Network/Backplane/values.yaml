@@ -922,7 +922,7 @@ cilium:
     # -- (list) Configure explicitly allowed VLAN id's for bpf logic bypass.
     # [0] will allow all VLAN id's without any filtering.
     # @default -- `[]`
-    vlanBypass: [0]
+    vlanBypass: []
     # -- (bool) Disable ExternalIP mitigation (CVE-2020-8554)
     # @default -- `false`
     disableExternalIPMitigation: false
@@ -1083,7 +1083,7 @@ cilium:
   # masqueraded (to an output device IPv4 address), if the output device runs the
   # program. When not specified, probing will automatically detect devices that have
   # a non-local route. This should be used only when autodetection is not suitable.
-  devices: 'eno1'
+  devices: 'eno1,bond0'
 
   # -- Forces the auto-detection of devices, even if specific devices are explicitly listed
   forceDeviceDetection: false
