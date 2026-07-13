@@ -15,19 +15,31 @@ data:
               "vendors": ["8086"],
               "devices": ["154c"],
               "drivers": ["vfio-pci"],
-              "pfNames": ["enp5s0f0np0", "enp5s0f1np1"]
+              "pfNames": ["enp5s0f1np1"]
             }
           ]
         },
         {
-          "resourceName": "intel_xxv710",
+          "resourceName": "intel_xxv710_port0",
           "resourcePrefix": "intel.com",
           "selectors": [
             {
               "vendors": ["8086"],
               "devices": ["154c"],
               "drivers": ["iavf"],
-              "pfNames": ["enp5s0f0np0", "enp5s0f1np1"]
+              "pfNames": ["enp5s0f0np0"]
+            }
+          ]
+        },
+        {
+          "resourceName": "intel_xxv710_port1",
+          "resourcePrefix": "intel.com",
+          "selectors": [
+            {
+              "vendors": ["8086"],
+              "devices": ["154c"],
+              "drivers": ["iavf"],
+              "pfNames": ["enp5s0f1np1"]
             }
           ]
         }
