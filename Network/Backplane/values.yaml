@@ -818,13 +818,13 @@ cilium:
         burstLimit: ~
       drop:
         # -- Enable drop events.
-        enabled: true
+        enabled: false
       policyVerdict:
         # -- Enable policy verdict events.
-        enabled: true
+        enabled: false
       trace:
         # -- Enable trace events.
-        enabled: true
+        enabled: false
     # @schema
     # type: [null, integer]
     # @schema
@@ -3472,7 +3472,6 @@ cilium:
   enableLBIPAM: true
 
 external-dns:
-
   enabled: true
   ## @param fullnameOverride String to fully override external-dns.fullname template
   ##
